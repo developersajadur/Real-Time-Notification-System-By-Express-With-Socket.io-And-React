@@ -2,6 +2,11 @@ import { Router } from 'express';
 import { userRoutes } from '../modules/User/user.route';
 import { authRoute } from '../modules/Auth/auth.route';
 import { teamRoutes } from '../modules/Team/team.routes';
+import { projectRoutes } from '../modules/Project/project.routes';
+import { reassignRoutes } from '../modules/Reassign/reassign.routes';
+import { taskRoutes } from '../modules/Task/task.routes';
+import { activityRoutes } from '../modules/ActivityLog/activity.routes';
+import { dashboardRoutes } from '../modules/Dashboard/dashboard.routes';
 
 
 const router = Router();
@@ -20,20 +25,24 @@ const moduleRoutes = [
     route: teamRoutes,
   },
   {
-    path: '/debates',
-    route: authRoute,
+    path: '/projects',
+    route: projectRoutes,
   },
   {
-    path: '/arguments',
-    route: authRoute,
+    path: '/tasks',
+    route: taskRoutes,
   },
   {
-    path: '/votes',
-    route: authRoute,
+    path: '/reassigns',
+    route: reassignRoutes,
   },
   {
-    path: '/',
-    route: authRoute,
+    path: '/activities',
+    route: activityRoutes,
+  },
+    {
+    path: '/dashboard',
+    route: dashboardRoutes,
   },
 ];
 
