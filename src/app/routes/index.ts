@@ -1,11 +1,7 @@
 import { Router } from 'express';
 import { userRoutes } from '../modules/User/user.route';
 import { authRoute } from '../modules/Auth/auth.route';
-import { participantRoutes } from '../modules/Participant/participant.route';
-import { debateRoutes } from '../modules/Debate/debate.route';
-import { argumentRoutes } from '../modules/Argument/argument.route';
-import { voteRoutes } from '../modules/Vote/vote.route';
-import { leaderboardRoutes } from '../modules/Leaderboard/leaderboard.route';
+import { teamRoutes } from '../modules/Team/team.routes';
 
 
 const router = Router();
@@ -20,24 +16,24 @@ const moduleRoutes = [
     route: userRoutes,
   },
   {
-    path: '/participants',
-    route: participantRoutes,
+    path: '/teams',
+    route: teamRoutes,
   },
   {
     path: '/debates',
-    route: debateRoutes,
+    route: authRoute,
   },
   {
     path: '/arguments',
-    route: argumentRoutes,
+    route: authRoute,
   },
   {
     path: '/votes',
-    route: voteRoutes,
+    route: authRoute,
   },
   {
     path: '/',
-    route: leaderboardRoutes,
+    route: authRoute,
   },
 ];
 

@@ -12,6 +12,4 @@ router.post(
 );
 
 
-router.post('/admin/seed', userController.seedAdmin);
-
 export const userRoutes = router;

@@ -14,26 +14,15 @@ const CreateUser = catchAsync(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      phone: user.phone,
       role: user.role,
     },
   });
 });
 
 
-const seedAdmin = catchAsync(async (req, res) => {
-  const admin = await userService.seedAdmin();
 
-  sendResponse(res, {
-    statusCode: status.CREATED,
-    success: true,
-    message: 'Admin seeded successfully',
-    data: admin,
-  });
-});
 
 export const userController = {
 
-  CreateUser,
-  seedAdmin,
+  CreateUser
 };

@@ -4,7 +4,6 @@ import cookieParser from 'cookie-parser';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import router from './app/routes';
 import notFound from './app/middlewares/notFound';
-import { startDebateMonitor } from './app/modules/Debate/debate.scheduler';
 const app = express();
 
 // parsers
@@ -28,8 +27,6 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-// Node Cron Jobs
-startDebateMonitor();
 
 app.use(globalErrorHandler);
 app.use(notFound);

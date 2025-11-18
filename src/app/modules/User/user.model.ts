@@ -18,7 +18,6 @@ const userSchema = new Schema<IUser>(
       minlength: [6, 'Password must be at least 6 characters long'],
       select: 0,
     },
-    phone: { type: String, required: [true, 'Phone is required'] },
     isBlocked: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
   },
