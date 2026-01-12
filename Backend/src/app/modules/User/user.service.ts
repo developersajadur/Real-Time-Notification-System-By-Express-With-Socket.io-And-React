@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import status from 'http-status';
 import AppError from '../../errors/AppError';
 import { IUser } from './user.interface';
 import { UserModel } from './user.model';
-import { createToken } from '../../helpers/jwtHelper';
-import config from '../../config';
 
-const CreateUser = async (payload: Partial<IUser>): Promise<any> => {
+const CreateUser = async (
+  payload: Partial<IUser>
+): Promise<IUser> => {
   const existing = await UserModel.findOne({ email: payload.email });
   if (existing) {
     throw new AppError(status.CONFLICT, 'Email already in use');
@@ -17,20 +16,11 @@ const CreateUser = async (payload: Partial<IUser>): Promise<any> => {
     role: 'user',
   });
 
-  const jwtPayload = {
-    userId: user?._id.toString(),
-    email: user?.email,
-    role: user?.role,
-  };
-
-  const token = createToken(
-    jwtPayload,
-    config.jwt_token_secret as string,
-    config.jwt_token_expires_in as any,
-  );
-
-  return { user, token };
+  return user;
 };
+
+
+
 
 export const userService = {
   CreateUser,
