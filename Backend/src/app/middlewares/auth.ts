@@ -2,7 +2,7 @@
 import status from 'http-status';
 import AppError from '../errors/AppError';
 import catchAsync from '../helpers/catchAsync';
-import { UserModel } from '../modules/User/user.model';
+import { User } from '../modules/User/user.model';
 import { NextFunction, Request, Response } from 'express';
 import { verifyToken } from '../helpers/jwtHelper';
 import config from '../config';
@@ -32,7 +32,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
         token as string,
         config.jwt_token_secret as string,
       ) as TTokenUser;
-      const user: any = UserModel.findById(verifiedUser.userId);
+      const user: any = User.findById(verifiedUser.userId);
       if (!user) {
         throw new AppError(status.UNAUTHORIZED, 'User not found!');
       }

@@ -4,11 +4,13 @@ import cookieParser from 'cookie-parser';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import router from './app/routes';
 import notFound from './app/middlewares/notFound';
+import helmet from 'helmet';
 const app = express();
 
 // parsers
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
@@ -23,7 +25,7 @@ app.use('/api/v1', router);
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
-    message: 'Server Is Running',
+    message: 'Real Time Notification System Server Is Running',
   });
 });
 
