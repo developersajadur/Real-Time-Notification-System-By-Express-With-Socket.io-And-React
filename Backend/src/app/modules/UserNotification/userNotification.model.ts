@@ -27,7 +27,6 @@ const userNotificationSchema = new Schema<IUserNotification>(
   },
 );
 
-
 userNotificationSchema.index(
   { userId: 1, notificationId: 1 },
   {

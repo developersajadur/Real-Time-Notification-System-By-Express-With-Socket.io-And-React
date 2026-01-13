@@ -5,7 +5,6 @@ import { categoryRoutes } from '../modules/Category/category.route';
 import { subscriptionRoutes } from '../modules/Subscription/subscription.route';
 import { notificationRoutes } from '../modules/Notification/notification.route';
 
-
 const router = Router();
 
 const moduleRoutes = [
@@ -21,17 +20,14 @@ const moduleRoutes = [
     path: '/categories',
     route: categoryRoutes,
   },
-    {
+  {
     path: '/subscriptions',
     route: subscriptionRoutes,
   },
-      {
+  {
     path: '/notifications',
     route: notificationRoutes,
   },
-  
-
-  
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

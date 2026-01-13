@@ -13,11 +13,10 @@ export interface IUser {
   updatedAt: Date;
 }
 
-
 export interface IJwtUser {
-    userId: Types.ObjectId,
-  email: string,
-  role: TUserRole,
-  iat: number,
-  exp: number
+  userId: Types.ObjectId;
+  email: string;
+  role: TUserRole;
+  iat: number;
+  exp: number;
 }

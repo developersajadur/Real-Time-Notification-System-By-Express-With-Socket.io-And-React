@@ -4,6 +4,8 @@ import app from './app';
 import 'dotenv/config';
 import { Server } from 'http';
 import config from './app/config';
+import { initSocket } from './app/socket/socket';
+import http from 'http';
 
 const port = config.port || 5000;
 const database_url = config.database_url;
@@ -12,6 +14,10 @@ let server: Server;
 async function main() {
   try {
     await mongoose.connect(database_url as string);
+
+    server = http.createServer(app);
+
+    initSocket(server);
 
     server = app.listen(port, () => {
       console.log(`App Is Listening On Port ${port}`);

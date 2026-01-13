@@ -48,11 +48,10 @@ const getMyNotificationsByCategory = catchAsync(async (req, res) => {
   const userId = req.user.userId;
   const { categoryId } = req.params;
 
-  const result =
-    await notificationService.getMyNotificationsByCategory(
-      userId,
-      categoryId,
-    );
+  const result = await notificationService.getMyNotificationsByCategory(
+    userId,
+    categoryId,
+  );
 
   sendResponse(res, {
     statusCode: status.OK,

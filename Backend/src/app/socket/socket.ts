@@ -6,28 +6,30 @@ import http from 'http';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import { TTokenUser } from '../middlewares/auth';
+import { allowedOrigins } from '../utils/cors';
 
 let io: Server;
 
 export const initSocket = (server: http.Server) => {
   io = new Server(server, {
     cors: {
-      origin: '*',
+      origin: allowedOrigins,
       credentials: true,
     },
   });
 
   io.use((socket: any, next) => {
     try {
-      const token =
-        socket.handshake.auth?.token ||
-        socket.handshake.headers?.authorization
+      const token = socket.handshake.auth?.token;
 
       if (!token) {
         return next(new Error('Authentication token missing'));
       }
 
-      const decoded = jwt.verify(token, config.jwt_token_secret as string) as TTokenUser;
+      const decoded = jwt.verify(
+        token,
+        config.jwt_token_secret as string,
+      ) as TTokenUser;
 
       socket.data.user = {
         id: decoded.userId,
@@ -40,7 +42,7 @@ export const initSocket = (server: http.Server) => {
     }
   });
 
-  io.on('connection', socket => {
+  io.on('connection', (socket) => {
     const userId = socket.data.user.id;
 
     socket.join(`user:${userId}`);

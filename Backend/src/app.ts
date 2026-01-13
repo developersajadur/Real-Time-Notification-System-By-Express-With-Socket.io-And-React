@@ -5,6 +5,7 @@ import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import router from './app/routes';
 import notFound from './app/middlewares/notFound';
 import helmet from 'helmet';
+import { allowedOrigins } from './app/utils/cors';
 const app = express();
 
 // parsers
@@ -14,7 +15,13 @@ app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ['http://localhost:5173'],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   }),
 );
@@ -28,7 +35,6 @@ app.get('/', (req: Request, res: Response) => {
     message: 'Real Time Notification System Server Is Running',
   });
 });
-
 
 app.use(globalErrorHandler);
 app.use(notFound);

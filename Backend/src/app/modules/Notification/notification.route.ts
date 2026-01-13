@@ -40,13 +40,13 @@ router.get(
 );
 
 router.patch(
-  '/read/:notificationId',
+  '/make-read/:notificationId',
   auth(USER_ROLE.USER),
   notificationController.markAsRead,
 );
 
 router.patch(
-  '/unread/:notificationId',
+  '/make-unread/:notificationId',
   auth(USER_ROLE.USER),
   notificationController.markAsUnread,
 );

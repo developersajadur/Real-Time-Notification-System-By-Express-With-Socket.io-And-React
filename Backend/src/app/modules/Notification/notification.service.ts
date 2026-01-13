@@ -126,37 +126,53 @@ const getMyNotificationsByCategory = async (
     })
     .sort({ createdAt: -1 })
     .lean()
-    .then(results =>
-      results.filter(item => item.notificationId !== null),
-    );
+    .then((results) => results.filter((item) => item.notificationId !== null));
 };
 
 const markAsRead = async (userId: string, notificationId: string) => {
-  return UserNotification.findOneAndUpdate(
+  const result = await UserNotification.findOneAndUpdate(
     {
       userId: new Types.ObjectId(userId),
       notificationId: new Types.ObjectId(notificationId),
     },
     {
       isRead: true,
-      readAt: new Date(),
     },
-    { new: true },
+    {
+      new: true,
+      select: { isRead: 1 },
+    },
   );
+  if (!result) {
+    throw new AppError(
+      status.NOT_FOUND,
+      'Notification not found for this user',
+    );
+  }
+  return result;
 };
 
 const markAsUnread = async (userId: string, notificationId: string) => {
-  return UserNotification.findOneAndUpdate(
+  const result = await UserNotification.findOneAndUpdate(
     {
       userId: new Types.ObjectId(userId),
       notificationId: new Types.ObjectId(notificationId),
     },
     {
       isRead: false,
-      readAt: null,
     },
-    { new: true },
+    {
+      new: true,
+      select: { isRead: 1 },
+    },
   );
+  if (!result) {
+    throw new AppError(
+      status.NOT_FOUND,
+      'Notification not found for this user',
+    );
+  }
+  return result;
 };
 
 const getUnreadCount = async (userId: string) => {

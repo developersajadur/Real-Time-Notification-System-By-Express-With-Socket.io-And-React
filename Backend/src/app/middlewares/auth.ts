@@ -48,7 +48,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
       }
 
       if (requiredRoles && !requiredRoles.includes(verifiedUser.role)) {
-        throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
+        throw new AppError(
+          status.UNAUTHORIZED,
+          'You are not allow to access this api!',
+        );
       }
 
       req.user = verifiedUser;

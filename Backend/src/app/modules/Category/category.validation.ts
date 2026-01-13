@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
- const createCategorySchema = z.object({
+const createCategorySchema = z.object({
   body: z.object({
     name: z
       .string()
@@ -14,8 +14,7 @@ import { z } from 'zod';
   }),
 });
 
-
- const updateCategorySchema = z.object({
+const updateCategorySchema = z.object({
   body: z.object({
     name: z
       .string()
@@ -30,7 +29,6 @@ import { z } from 'zod';
     isActive: z.boolean().optional(),
   }),
 });
-
 
 export const categoryValidation = {
   createCategorySchema,

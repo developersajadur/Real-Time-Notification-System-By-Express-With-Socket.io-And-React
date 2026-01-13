@@ -10,4 +10,5 @@ export default {
   salt_rounds: process.env.SALT_ROUNDS,
   jwt_token_secret: process.env.JWT_TOKEN_SECRET,
   jwt_token_expires_in: process.env.JWT_TOKEN_EXPIRES_IN,
+  client_url: process.env.CLIENT_URL,
 };

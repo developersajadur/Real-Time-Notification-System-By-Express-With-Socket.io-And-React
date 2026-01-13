@@ -11,7 +11,6 @@ export interface INotification {
   updatedAt?: Date;
 }
 
-
 export interface ICreateNotificationPayload {
   title: string;
   message: string;

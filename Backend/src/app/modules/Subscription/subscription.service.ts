@@ -84,7 +84,7 @@ const getSubscribedUserByCategory = async (
     .select('userId')
     .lean();
 
-  return subscriptions.map(sub => {
+  return subscriptions.map((sub) => {
     const user = sub.userId as any;
 
     return {
@@ -94,7 +94,6 @@ const getSubscribedUserByCategory = async (
     };
   });
 };
-
 
 export const subscriptionService = {
   subscribeCategory,

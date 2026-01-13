@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
- const createNotificationSchema = z.object({
+const createNotificationSchema = z.object({
   body: z.object({
     title: z
       .string()
@@ -18,7 +18,7 @@ import { z } from 'zod';
   }),
 });
 
- const updateNotificationSchema = z.object({
+const updateNotificationSchema = z.object({
   body: z.object({
     title: z
       .string()
@@ -43,5 +43,3 @@ export const notificationValidation = {
   createNotificationSchema,
   updateNotificationSchema,
 };
-
-

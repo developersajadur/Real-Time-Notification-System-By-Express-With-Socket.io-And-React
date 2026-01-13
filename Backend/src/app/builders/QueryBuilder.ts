@@ -12,7 +12,7 @@ class QueryBuilder<T> {
   search(searchableFields: string[]) {
     const searchTerm = this.query.search as string;
     if (searchTerm) {
-      const searchConditions = searchableFields.map(field => ({
+      const searchConditions = searchableFields.map((field) => ({
         [field]: { $regex: searchTerm, $options: 'i' },
       }));
 
@@ -26,7 +26,7 @@ class QueryBuilder<T> {
   filter() {
     const queryCopy = { ...this.query };
     const excludeFields = ['search', 'sort', 'limit', 'page', 'fields'];
-    excludeFields.forEach(field => delete queryCopy[field]);
+    excludeFields.forEach((field) => delete queryCopy[field]);
 
     // Price/Duration filter logic example
     if ('minDuration' in queryCopy || 'maxDuration' in queryCopy) {

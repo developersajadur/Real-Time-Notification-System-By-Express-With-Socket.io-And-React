@@ -68,5 +68,5 @@ export const subscriptionController = {
   subscribeCategory,
   unsubscribeCategory,
   getMySubscriptions,
-  getSubscribedUserByCategory
+  getSubscribedUserByCategory,
 };
