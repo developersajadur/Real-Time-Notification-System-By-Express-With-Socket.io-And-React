@@ -4,8 +4,7 @@ import { categoryService } from '../Category/category.service';
 import { Subscription } from './subscription.model';
 import AppError from '../../errors/AppError';
 import status from 'http-status';
-import { ISubscription } from './subscription.interface';
-import { IUser } from '../User/user.interface';
+import { ISubscribedUser, ISubscription } from './subscription.interface';
 
 const subscribeCategory = async (
   categoryId: string,
@@ -74,7 +73,7 @@ const getMySubscriptions = async (
 
 const getSubscribedUserByCategory = async (
   categoryId: string,
-): Promise<Partial<IUser>[]> => {
+): Promise<ISubscribedUser[]> => {
   const subscriptions = await Subscription.find({
     categoryIds: new Types.ObjectId(categoryId),
   })
@@ -85,7 +84,7 @@ const getSubscribedUserByCategory = async (
     .select('userId')
     .lean();
 
-  return subscriptions.map((sub) => {
+  return subscriptions.map(sub => {
     const user = sub.userId as any;
 
     return {
@@ -95,6 +94,7 @@ const getSubscribedUserByCategory = async (
     };
   });
 };
+
 
 export const subscriptionService = {
   subscribeCategory,

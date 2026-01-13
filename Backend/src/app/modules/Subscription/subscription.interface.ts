@@ -7,3 +7,9 @@ export interface ISubscription {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface ISubscribedUser {
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
+}

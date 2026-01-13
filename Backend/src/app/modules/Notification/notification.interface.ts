@@ -10,3 +10,10 @@ export interface INotification {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+
+export interface ICreateNotificationPayload {
+  title: string;
+  message: string;
+  categoryId: string;
+}
