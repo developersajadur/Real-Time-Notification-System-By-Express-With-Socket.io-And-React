@@ -5,7 +5,6 @@ export interface ICategory {
   name: string;
   description?: string;
   isActive: boolean;
-  createdBy: 'SYSTEM' | 'ADMIN';
   createdAt?: Date;
   updatedAt?: Date;
 }

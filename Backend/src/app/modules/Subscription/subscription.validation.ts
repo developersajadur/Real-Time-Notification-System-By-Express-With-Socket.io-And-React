@@ -1,16 +1,23 @@
-
+// subscription.validation.ts
 import { z } from 'zod';
 
-export const updateSubscriptionSchema = z.object({
+const subscribeCategorySchema = z.object({
   body: z.object({
-    categoryIds: z
-      .array(
-        z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid category ID')
-      )
-      .min(1, 'At least one category must be selected'),
+    categoryId: z
+      .string()
+      .regex(/^[0-9a-fA-F]{24}$/, 'Invalid category ID format'),
+  }),
+});
+
+const unsubscribeCategorySchema = z.object({
+  body: z.object({
+    categoryId: z
+      .string()
+      .regex(/^[0-9a-fA-F]{24}$/, 'Invalid category ID format'),
   }),
 });
 
 export const subscriptionValidation = {
-  updateSubscriptionSchema,
+  subscribeCategorySchema,
+  unsubscribeCategorySchema,
 };

@@ -4,7 +4,7 @@ import AppError from '../../errors/AppError';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 import { TLoginUser } from './auth.interface';
-import { UserModel } from '../User/user.model';
+import { User } from '../User/user.model';
 import { createToken } from '../../helpers/jwtHelper';
 
 export type TJwtPayload = {
@@ -15,7 +15,7 @@ export type TJwtPayload = {
 
 const loginUser = async (payload: TLoginUser): Promise<{ token: string }> => {
   // console.log(payload);
-  const user = await UserModel.findOne({ email: payload?.email }).select(
+  const user = await User.findOne({ email: payload?.email }).select(
     '+password',
   );
   if (!user || user.isDeleted) {
