@@ -5,7 +5,7 @@ import status from 'http-status';
 import { userService } from './user.service';
 import config from '../../config';
 
-const CreateUser = catchAsync(async (req, res) => {
+const createUser = catchAsync(async (req, res) => {
   const user = await userService.CreateUser(req.body);
 
   res.cookie('token', (user as any).token, {
@@ -30,6 +30,19 @@ const CreateUser = catchAsync(async (req, res) => {
   });
 });
 
+const getMe = catchAsync(async (req, res) => {
+  const userId = req.user.userId;
+  const user = await userService.getMe(userId);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'User fetched successfully',
+    data: user,
+  });
+});
+
 export const userController = {
-  CreateUser,
+  createUser,
+  getMe,
 };

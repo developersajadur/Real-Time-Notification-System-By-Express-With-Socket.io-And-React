@@ -1,12 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import {  Link } from "react-router";
 
 import { cn } from "@/lib/utils";
-import { loginSchema } from "./auth.schema";
+import { registerSchema } from "./auth.schema";
+import { useRegister } from "@/features/auth/useRegister";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,60 +26,69 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router";
-import { toast } from "sonner";
-import { login } from "./auth.api";
+import { queryClient } from "@/lib/react-query";
+import { login } from "@/features/auth/auth.api";
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
-interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function LoginForm({ className, ...props }: LoginFormProps) {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+export function RegisterForm({ className, ...props }: RegisterFormProps) {
+  const { mutate: registerUser, isPending } = useRegister();
+
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
-    try {
-      setIsLoading(true);
+const onSubmit = (data: RegisterFormValues) => {
+  registerUser(data, {
+    onSuccess: async () => {
+      await login({
+        email: data.email,
+        password: data.password,
+      });
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+    },
+  });
+};
 
-      const res = await login(data);
-
-      toast.success("Login successful");
-
-      // later:
-      // save token → context / localStorage
-      // redirect → dashboard
-
-      console.log("LOGIN RESPONSE:", res);
-    } catch (error: any) {
-      const message =
-        error?.response?.data?.message || "Invalid email or password";
-
-      toast.error(message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="shadow-sm">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Login to your account</CardTitle>
+          <CardTitle className="text-2xl">Create your account</CardTitle>
           <CardDescription>
-            Enter your email and password below to login
+            Enter your information below to create an account
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="John Doe"
+                        className="h-11"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="email"
@@ -103,40 +113,34 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex items-center justify-between">
-                      <FormLabel>Password</FormLabel>
-                      {/* <a
-                        href="#"
-                        className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-                      >
-                        Forgot password?
-                      </a> */}
-                    </div>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" className="h-11" {...field} />
+                      <Input
+                        type="password"
+                        className="h-11"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <div className="flex flex-col gap-2 pt-2">
-                <Button
-                  type="submit"
-                  className="w-full h-11"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Logging in..." : "Login"}
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                className="w-full h-11"
+                disabled={isPending}
+              >
+                {isPending ? "Creating account..." : "Create account"}
+              </Button>
 
               <p className="text-center text-sm text-muted-foreground">
-                Don&apos;t have an account?{" "}
+                Already have an account?{" "}
                 <Link
-                  to="/register"
+                  to="/login"
                   className="underline underline-offset-4 hover:text-primary"
                 >
-                  Sign up
+                  Sign in
                 </Link>
               </p>
             </form>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -6,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { cn } from "@/lib/utils";
-import { registerSchema } from "./auth.schema";
+import { loginSchema } from "./auth.schema";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,77 +25,40 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router";
-import { register } from "./auth.api";
-import { toast } from "sonner";
+import { useLogin } from "@/features/auth/useLogin";
 
-type RegisterFormValues = z.infer<typeof registerSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>;
 
-interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function RegisterForm({ className, ...props }: RegisterFormProps) {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const form = useForm<RegisterFormValues>({
-    resolver: zodResolver(registerSchema),
+export function LoginForm({ className, ...props }: LoginFormProps) {
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
+  const { mutate: loginUser, isPending } = useLogin();
 
-  const onSubmit = async (data: RegisterFormValues) => {
-    try {
-      setIsLoading(true);
 
-      const res = await register(data);
-
-      toast.success("Account created successfully");
-
-      // next steps (later):
-      // - redirect to /login
-      // - or auto-login
-
-      console.log("REGISTER RESPONSE:", res);
-    } catch (error: any) {
-      const message = error?.response?.data?.message || "Registration failed";
-
-      toast.error(message);
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: LoginFormValues) => {
+    loginUser(data);
   };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="shadow-sm">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Create your account</CardTitle>
+          <CardTitle className="text-2xl">Login to your account</CardTitle>
           <CardDescription>
-            Enter your information below to create an account
+            Enter your email and password below to login
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Full name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="John Doe"
-                        className="h-11"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="email"
@@ -121,7 +83,15 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <div className="flex items-center justify-between">
+                      <FormLabel>Password</FormLabel>
+                      {/* <a
+                        href="#"
+                        className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+                      >
+                        Forgot password?
+                      </a> */}
+                    </div>
                     <FormControl>
                       <Input type="password" className="h-11" {...field} />
                     </FormControl>
@@ -134,19 +104,19 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                 <Button
                   type="submit"
                   className="w-full h-11"
-                  disabled={isLoading}
+                  disabled={isPending}
                 >
-                  {isLoading ? "Creating account..." : "Create account"}
+                  {isPending ? "Logging in..." : "Login"}
                 </Button>
               </div>
 
               <p className="text-center text-sm text-muted-foreground">
-                Already have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
-                  to="/login"
+                  to="/register"
                   className="underline underline-offset-4 hover:text-primary"
                 >
-                  Sign in
+                  Sign up
                 </Link>
               </p>
             </form>

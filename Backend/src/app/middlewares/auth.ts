@@ -23,7 +23,11 @@ const auth = (...requiredRoles: TUserRole[]) => {
       res: Response,
       next: NextFunction,
     ) => {
-      const token = req.headers.authorization;
+      const token =
+        (await req.headers?.authorization) ||
+        req.cookies?.token ||
+        req.headers.authorization?.split(' ')[1];
+
       if (!token) {
         throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
       }

@@ -1,28 +1,45 @@
-import useUser from '@/hooks/useUser';
-import type { ReactNode } from 'react';
-import { Navigate } from 'react-router';
+import { Navigate, Outlet } from "react-router";
+import { useEffect } from "react";
+import { useMe } from "@/features/auth/useMe";
+import { useLogout } from "@/features/auth/useLogout";
 
-type TProtectedRoute = {
-  children: ReactNode;
+type ProtectedRouteProps = {
+  allowedRoles?: ("user" | "admin")[];
 };
 
-const ProtectedRoute = ({ children }: TProtectedRoute) => {
-  const { user, isLoading } = useUser();
+export default function ProtectedRoute({
+  allowedRoles,
+}: ProtectedRouteProps) {
+  const { data: user, isLoading } = useMe();
+  const { mutate: logout } = useLogout();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!user) {
+        logout();
+      }
+
+      if (
+        user &&
+        allowedRoles &&
+        !allowedRoles.includes(user.role)
+      ) {
+        logout();
+      }
+    }
+  }, [user, isLoading, allowedRoles, logout]);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   if (!user) {
-    return <Navigate to="/signin" replace />;
+    return <Navigate to="/login" replace />;
   }
 
-//   // Example block check
-//   if (user.) {
-//     return <div>Your account has been blocked. Please contact support.</div>;
-//   }
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/login" replace />;
+  }
 
-  return <>{children}</>;
-};
-
-export default ProtectedRoute;
+  return <Outlet />;
+}

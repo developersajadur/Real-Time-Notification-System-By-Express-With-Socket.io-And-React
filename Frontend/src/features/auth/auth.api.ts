@@ -16,7 +16,17 @@ export const login = async (payload: LoginPayload) => {
   return res.data
 }
 
+export const logout = async () => {
+  const res = await axios.post("/auth/logout");
+  return res.data;
+};
+
 export const register = async (payload: RegisterPayload) => {
   const res = await axios.post("/users/register", payload)
   return res.data
 }
+
+export const getMe = async () => {
+  const res = await axios.get("/users/me");
+  return res.data.data;
+};

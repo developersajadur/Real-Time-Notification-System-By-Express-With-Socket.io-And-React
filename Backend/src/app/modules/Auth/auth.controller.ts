@@ -23,6 +23,35 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+
+const getMeForAuth = catchAsync(async (req, res) => {
+  const user = req.user;
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User retrieved successfully",
+    data: user,
+  });
+});
+
+const logout = catchAsync(async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: config.node_env === "production",
+    sameSite: "lax",
+  });
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Logout successful",
+    data: null,
+  });
+});
+
 export const AuthControllers = {
   loginUser,
+  logout,
+  getMeForAuth
 };
