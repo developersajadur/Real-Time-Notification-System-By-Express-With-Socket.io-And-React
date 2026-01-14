@@ -6,6 +6,10 @@ import ProtectedRoute from "./ProtectedRoutes";
 import UserDashboard from "@/pages/UserDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 import PublicAuthRoute from "./PublicAuthRoute";
+import CreateCategory from "@/pages/CreateCategory";
+import AdminLayout from "@/layouts/AdminLayout";
+import CategoryList from "@/pages/CategoryList";
+import EditCategory from "@/pages/EditCategory";
 
 const router = createBrowserRouter([
   {
@@ -13,11 +17,31 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedRoles={["user"]} />,
     children: [{ index: true, element: <UserDashboard /> }],
   },
-  {
-    path: "/admin",
-    element: <ProtectedRoute allowedRoles={["admin"]} />,
-    children: [{ index: true, element: <AdminDashboard /> }],
-  },
+{
+  path: "/admin",
+  element: <ProtectedRoute allowedRoles={["admin"]} />,
+  children: [
+    {
+      element: <AdminLayout />,
+      children: [
+        { index: true, element: <AdminDashboard /> },
+        {
+          path: "categories/create",
+          element: <CreateCategory />,
+        },
+                {
+          path: "categories/edit/:id",
+          element: <EditCategory />,
+        },
+              {
+          path: "categories/manage-categories",
+          element: <CategoryList />,
+        },
+      ],
+    },
+  ],
+},
+
   {
     element: <PublicAuthRoute />,
     children: [
@@ -31,5 +55,5 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-export default router;
 
+export default router;
