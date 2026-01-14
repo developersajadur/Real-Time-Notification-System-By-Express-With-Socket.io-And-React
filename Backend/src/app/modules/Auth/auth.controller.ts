@@ -9,9 +9,10 @@ const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req?.body);
   const { token } = result;
   res.cookie('token', token, {
-    secure: config.node_env === 'production',
     httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24 * 365,
+  secure: config.node_env === "production",
+  sameSite: "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   sendResponse(res, {

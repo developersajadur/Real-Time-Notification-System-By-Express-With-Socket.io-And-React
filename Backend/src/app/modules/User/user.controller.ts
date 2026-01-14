@@ -1,20 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import catchAsync from '../../helpers/catchAsync';
 import sendResponse from '../../helpers/sendResponse';
 import status from 'http-status';
 import { userService } from './user.service';
+import config from '../../config';
 
 const CreateUser = catchAsync(async (req, res) => {
   const user = await userService.CreateUser(req.body);
+
+  res.cookie('token', (user as any).token, {
+    httpOnly: true,
+    secure: config.node_env === 'production',
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
 
   sendResponse(res, {
     statusCode: status.CREATED,
     success: true,
     message: 'User Registered Successfully',
     data: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
+      user: {
+        name: (user as any).user.name,
+        email: (user as any).user.email,
+        role: (user as any).user.role,
+      },
+      token: (user as any).token,
     },
   });
 });
