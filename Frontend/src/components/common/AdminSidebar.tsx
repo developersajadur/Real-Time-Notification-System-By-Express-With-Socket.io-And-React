@@ -18,7 +18,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarRail,
 } from "@/components/ui/sidebar"
 import { SidebarHeaders } from "./SidebarHeader"
 import { NavUser } from "./NavUser"
@@ -161,7 +160,7 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
       <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>
-      <SidebarRail />
+      {/* <SidebarRail /> */}
     </Sidebar>
   )
 }

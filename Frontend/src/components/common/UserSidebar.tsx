@@ -1,9 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ArchiveX, File, Inbox, Send, Trash2 } from "lucide-react"
+import * as React from "react";
+import { ArchiveX, File, Inbox, Send, Trash2 } from "lucide-react";
 
-import { Label } from "@/components/ui/label"
 import {
   Sidebar,
   SidebarContent,
@@ -16,12 +15,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { Switch } from "@/components/ui/switch"
-import { NavUser } from "./NavUser"
-import { SidebarHeaders } from "./SidebarHeader"
-import { useMe } from "@/features/auth/useMe"
-import { Link } from "react-router"
+} from "@/components/ui/sidebar";
+import { NavUser } from "./NavUser";
+import { SidebarHeaders } from "./SidebarHeader";
+import { useMe } from "@/features/auth/useMe";
+import { Link } from "react-router";
 
 // This is sample data
 const data = {
@@ -139,16 +137,17 @@ const data = {
         "To celebrate our recent project success, I'd like to organize a team dinner.\nAre you available next Friday evening? Please let me know your preferences.",
     },
   ],
-}
+};
 
-export function UserSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
-    const { data: user } = useMe();
+export function UserSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const { data: user } = useMe();
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
-  const [activeItem, setActiveItem] = React.useState(data.userNav[0])
-  const [mails, setMails] = React.useState(data.mails)
-  const { setOpen } = useSidebar()
+  const [activeItem, setActiveItem] = React.useState(data.userNav[0]);
+  const [mails, setMails] = React.useState(data.mails);
+  const { setOpen } = useSidebar();
 
   return (
     <Sidebar
@@ -161,7 +160,7 @@ export function UserSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
       {/* This will make the sidebar appear as icons. */}
       <Sidebar
         collapsible="none"
-        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r"
+        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r bg-muted/20"
       >
         <SidebarHeaders />
         <SidebarContent>
@@ -169,28 +168,28 @@ export function UserSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
             <SidebarGroupContent className="px-1.5 md:px-0">
               <SidebarMenu>
                 {data.userNav.map((item) => (
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem key={item.title} className="">
                     <SidebarMenuButton
                       tooltip={{
                         children: item.title,
                         hidden: false,
                       }}
                       onClick={() => {
-                        setActiveItem(item)
-                        const mail = data.mails.sort(() => Math.random() - 0.5)
+                        setActiveItem(item);
+                        const mail = data.mails.sort(() => Math.random() - 0.5);
                         setMails(
                           mail.slice(
                             0,
                             Math.max(5, Math.floor(Math.random() * 10) + 1)
                           )
-                        )
-                        setOpen(true)
+                        );
+                        setOpen(true);
                       }}
                       isActive={activeItem?.title === item.title}
-                      className="px-2.5 md:px-2"
+                      className=""
                     >
-                      <item.icon />
-                      <span>{item.title}</span>
+                      <item.icon className="sidebar-icon" />
+                      {/* <span>{item.title}</span> */}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -211,10 +210,10 @@ export function UserSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
             <div className="text-foreground text-base font-medium">
               {activeItem?.title}
             </div>
-            <Label className="flex items-center gap-2 text-sm">
+            {/* <Label className="flex items-center gap-2 text-sm">
               <span>Unreads</span>
               <Switch className="shadow-none" />
-            </Label>
+            </Label> */}
           </div>
           <SidebarInput placeholder="Type to search..." />
         </SidebarHeader>
@@ -225,14 +224,22 @@ export function UserSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
                 <Link
                   to="#"
                   key={mail.email}
-                  className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start gap-2 border-b p-4 text-sm leading-tight whitespace-nowrap last:border-b-0"
+                  className="group flex flex-col gap-1 border-b px-4 py-3 text-sm hover:bg-muted/40"
                 >
-                  <div className="flex w-full items-center gap-2">
-                    <span>{mail.name}</span>{" "}
-                    <span className="ml-auto text-xs">{mail.date}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-foreground">
+                      {mail.name}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {mail.date}
+                    </span>
                   </div>
-                  <span className="font-medium">{mail.subject}</span>
-                  <span className="line-clamp-2 w-65 text-xs whitespace-break-spaces">
+
+                  <span className="text-sm font-semibold text-foreground/90">
+                    {mail.subject}
+                  </span>
+
+                  <span className="line-clamp-2 text-xs text-muted-foreground">
                     {mail.teaser}
                   </span>
                 </Link>
@@ -242,5 +249,5 @@ export function UserSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
         </SidebarContent>
       </Sidebar>
     </Sidebar>
-  )
+  );
 }

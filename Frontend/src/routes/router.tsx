@@ -33,5 +33,3 @@ const router = createBrowserRouter([
 ]);
 export default router;
 
-//  element: <ProtectedRoute />, // any logged-in user
-//    element: <ProtectedRoute allowedRoles={["admin"]} />,

@@ -1,9 +1,7 @@
 import {
   BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useLogout } from "@/features/auth/useLogout";
@@ -58,7 +56,6 @@ export function NavUser({ user }: NavUserProps) {
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
 
@@ -90,12 +87,8 @@ export function NavUser({ user }: NavUserProps) {
                 Account
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+               <Settings/>
+                Settings
               </DropdownMenuItem>
             </DropdownMenuGroup>
 
