@@ -26,6 +26,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useNavigate } from "react-router";
 
 type NavUserProps = {
   user?: IUser;
@@ -34,6 +35,12 @@ type NavUserProps = {
 export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar();
   const { mutate: logout } = useLogout();
+  const navigate = useNavigate();
+
+  const handleLogout = () => { 
+    logout();
+    navigate("/login", { replace: true });
+  }
 
   if (!user) return null;
 
@@ -95,7 +102,7 @@ export function NavUser({ user }: NavUserProps) {
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              onClick={() => logout()}
+              onClick={() => handleLogout()}
               className="cursor-pointer text-destructive"
             >
               <LogOut />

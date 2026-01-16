@@ -94,6 +94,11 @@ a:hover {
   margin: 0;
 }
 
+#_r_8_-form-item {
+  color: white;
+  opacity: 100%;
+}
+
 .sidebar-icon {
   width: 22px;
   height: 22px;
@@ -101,11 +106,17 @@ a:hover {
   margin-left: 5px;
 }
 
-#sidebarTrigger{
+#sidebarTrigger {
   background-color: transparent;
   border: none;
   padding: 0;
   margin: 0;
+}
+
+.ring-offset-background {
+  background: black;
+  color: white;
+  opacity: 100%;
 }
 
 body {

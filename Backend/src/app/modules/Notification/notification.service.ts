@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Types } from 'mongoose';
 import { Notification } from './notification.model';
 import { socketEmitter } from '../../socket/emitter';
 import { subscriptionService } from '../Subscription/subscription.service';
 import { UserNotification } from '../UserNotification/userNotification.model';
 import { categoryService } from '../Category/category.service';
-import { ICreateNotificationPayload } from './notification.interface';
+import { ICreateNotificationPayload, INotification } from './notification.interface';
 import AppError from '../../errors/AppError';
 import status from 'http-status';
+import QueryBuilder from '../../builders/QueryBuilder';
 
 const createNotification = async (
   payload: ICreateNotificationPayload,
@@ -52,6 +54,43 @@ const createNotification = async (
     notification,
     recipients: subscribedUsers,
   };
+};
+
+const getAllNotificationByQuery = async (query: Record<string, any>) => {
+  const modelQuery = Notification.find().populate({
+    path: 'categoryId',
+    select: 'name description',
+  });
+
+  const categorySearchableFields = ['title', 'message'];
+
+  const categoryQueryBuilder = new QueryBuilder<INotification>(modelQuery, query)
+    .search(categorySearchableFields)
+    .filter()
+    .sort()
+    .fields()
+    .paginate();
+
+  const result = await categoryQueryBuilder.modelQuery;
+  const meta = await categoryQueryBuilder.countTotal();
+
+  return {
+    meta,
+    data: result,
+  };
+};
+
+const getNotificationById = async (notificationId: string) => {
+  const notification = await Notification.findById(notificationId).populate({
+    path: 'categoryId',
+    select: 'name description',
+  });
+
+  if (!notification) {
+    throw new AppError(status.NOT_FOUND, 'Notification not found');
+  }
+
+  return notification;
 };
 
 const updateNotification = async (
@@ -203,6 +242,8 @@ const getUserNotificationsByAdmin = async (userId: string) => {
   return notifications;
 };
 
+
+
 export const notificationService = {
   createNotification,
   updateNotification,
@@ -212,4 +253,6 @@ export const notificationService = {
   markAsUnread,
   getUnreadCount,
   getUserNotificationsByAdmin,
+  getAllNotificationByQuery,
+  getNotificationById
 };

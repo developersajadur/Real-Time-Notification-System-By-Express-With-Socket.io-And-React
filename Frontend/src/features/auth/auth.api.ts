@@ -18,6 +18,15 @@ export const login = async (payload: LoginPayload) => {
 
 export const logout = async () => {
   const res = await axios.post("/auth/logout");
+  const localStorageToken = localStorage.getItem("token");
+  const localStoragePersistAuth = localStorage.getItem("persist:auth");
+  if (localStoragePersistAuth) {
+    localStorage.removeItem("persist:auth");
+  }
+  if (localStorageToken) {
+    localStorage.removeItem("token");
+       localStorage.removeItem("persist:auth");
+  }
   return res.data;
 };
 

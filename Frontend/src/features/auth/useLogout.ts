@@ -9,8 +9,10 @@ export const useLogout = () => {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["me"] });
+      
 
       toast.success("Logged out successfully");
+
     },
     onError: () => {
       toast.error("Logout failed");

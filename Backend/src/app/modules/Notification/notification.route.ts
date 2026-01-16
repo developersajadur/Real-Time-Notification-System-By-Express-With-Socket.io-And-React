@@ -14,6 +14,18 @@ router.post(
   notificationController.createNotification,
 );
 
+router.get(
+  '/all',
+  auth(USER_ROLE.ADMIN),
+  notificationController.getAllNotificationByQuery,
+);
+
+router.get(
+  '/all/:id',
+  auth(USER_ROLE.ADMIN),
+  notificationController.getNotificationById,
+);
+
 router.patch(
   '/update/:id',
   auth(USER_ROLE.ADMIN),

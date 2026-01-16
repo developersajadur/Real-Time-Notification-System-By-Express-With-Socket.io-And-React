@@ -28,22 +28,6 @@ class QueryBuilder<T> {
     const excludeFields = ['search', 'sort', 'limit', 'page', 'fields'];
     excludeFields.forEach((field) => delete queryCopy[field]);
 
-    // Price/Duration filter logic example
-    if ('minDuration' in queryCopy || 'maxDuration' in queryCopy) {
-      const durationQuery: Record<string, number> = {};
-
-      if (queryCopy.minDuration) {
-        durationQuery.$gte = Number(queryCopy.minDuration);
-        delete queryCopy.minDuration;
-      }
-
-      if (queryCopy.maxDuration) {
-        durationQuery.$lte = Number(queryCopy.maxDuration);
-        delete queryCopy.maxDuration;
-      }
-
-      queryCopy['duration'] = durationQuery;
-    }
 
     this.modelQuery = this.modelQuery.find(queryCopy as FilterQuery<T>);
     return this;

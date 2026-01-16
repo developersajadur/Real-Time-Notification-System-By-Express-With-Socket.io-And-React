@@ -18,6 +18,31 @@ const createNotification = catchAsync(async (req, res) => {
   });
 });
 
+const getAllNotificationByQuery = catchAsync(async (req, res) => {
+  const result = await notificationService.getAllNotificationByQuery(req.query);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Notifications retrieved successfully',
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
+const getNotificationById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await notificationService.getNotificationById(id);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Notification retrieved successfully',
+    data: result,
+  });
+});
+
 const updateNotification = catchAsync(async (req, res) => {
   const { id } = req.params;
 
@@ -123,4 +148,6 @@ export const notificationController = {
   markAsUnread,
   getUnreadCount,
   getUserNotificationsByAdmin,
+  getAllNotificationByQuery,
+  getNotificationById
 };

@@ -30,7 +30,7 @@ const EditCategory = () => {
           mutate(
             { id: category._id, payload: data },
             {
-              onSuccess: () => navigate("/admin"),
+              onSuccess: () => navigate("/admin/categories"),
             }
           )
         }
