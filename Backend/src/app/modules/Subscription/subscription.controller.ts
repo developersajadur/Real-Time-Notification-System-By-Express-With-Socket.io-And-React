@@ -4,11 +4,10 @@ import sendResponse from '../../helpers/sendResponse';
 import { subscriptionService } from './subscription.service';
 
 const subscribeCategory = catchAsync(async (req, res) => {
-  const { categoryId } = req.body;
   const userId = req.user.userId;
 
   const result = await subscriptionService.subscribeCategory(
-    categoryId,
+    req.params.id as string,
     userId,
   );
 
@@ -21,11 +20,10 @@ const subscribeCategory = catchAsync(async (req, res) => {
 });
 
 const unsubscribeCategory = catchAsync(async (req, res) => {
-  const { categoryId } = req.body;
   const userId = req.user.userId;
 
   const result = await subscriptionService.unsubscribeCategory(
-    categoryId,
+    req.params.id as string,
     userId,
   );
 

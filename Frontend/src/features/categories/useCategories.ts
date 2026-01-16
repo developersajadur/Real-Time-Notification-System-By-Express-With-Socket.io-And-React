@@ -1,21 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
-import { getAllCategories, getCategoryById } from "./category.api";
-import type { ICategory } from "./category.types";
+import { getAllCategories } from "./category.api";
 
 
 
-export const useCategories = () => {
-  return useQuery<ICategory[]>({
-    queryKey: ["categories"],
-    queryFn: getAllCategories,
-  });
-};
-
-
-export const useCategory = (id: string) => {
-  return useQuery<ICategory>({
-    queryKey: ["categories", id],
-    queryFn: () => getCategoryById(id),
-    enabled: !!id,
-  });
+export const useCategories = (
+  page: number,
+  limit: number,
+  search: string
+) => {
+  return useQuery({
+    queryKey: ["categories", page, search],
+    queryFn: () => getAllCategories(page, limit, search),
+    keepPreviousData: true,
+  } as any);
 };

@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router";
 import CategoryForm from "@/components/Category/CategoryForm";
 import { useUpdateCategory } from "@/features/categories/useUpdateCategory";
-import { useCategory } from "@/features/categories/useCategories";
+import { useCategory } from "@/features/categories/useCategory";
 
 const EditCategory = () => {
   const { id } = useParams<{ id: string }>();

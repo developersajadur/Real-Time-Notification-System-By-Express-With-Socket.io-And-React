@@ -1,9 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "@/lib/axios";
 import { type CreateCategoryPayload, type ICategory, type UpdateCategoryPayload } from "./category.types";
 
-export const getAllCategories = async (): Promise<ICategory[]> => {
-  const res = await axios.get("/categories/get-all");
-  return res.data.data;
+
+
+export const getAllCategories = async (
+  page: number,
+  limit: number,
+  search: string
+): Promise<{ data: ICategory[]; meta: any }> => {
+  const res = await axios.get("/categories/get-all", {
+    params: { page, limit, search },
+  });
+  return res.data;
 };
 
 export const createCategory = async (

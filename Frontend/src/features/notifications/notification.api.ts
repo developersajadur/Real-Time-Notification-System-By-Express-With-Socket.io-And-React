@@ -1,5 +1,5 @@
 import axios from "@/lib/axios";
-import type { PaginatedNotifications } from "./notification.types";
+import type { IUserNotification, PaginatedNotifications } from "./notification.types";
 
 export const createNotification = (payload: {
   title: string;
@@ -42,4 +42,14 @@ export const updateNotification = ({
   };
 }) => {
   return axios.patch(`/notifications/update/${id}`, payload);
+};
+
+
+export const getMyNotificationsByCategory = async (
+  categoryId: string
+): Promise<IUserNotification[]> => {
+  const res = await axios.get(
+    `/notifications/me/category/${categoryId}`
+  );
+  return res.data.data;
 };

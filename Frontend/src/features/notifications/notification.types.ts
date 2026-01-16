@@ -25,3 +25,18 @@ export interface PaginatedNotifications {
   data: INotification[];
   meta: IPaginationMeta;
 }
+
+
+export interface IUserNotification {
+  _id: string;
+  isRead: boolean;
+  createdAt: string;
+  updatedAt: string;
+  notificationId: {
+    _id: string;
+    title: string;
+    message: string;
+    categoryId: string;
+    createdAt: string;
+  };
+}

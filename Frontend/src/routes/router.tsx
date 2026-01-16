@@ -3,11 +3,9 @@ import { createBrowserRouter } from "react-router";
 import ProtectedRoute from "./ProtectedRoutes";
 import PublicAuthRoute from "./PublicAuthRoute";
 
-import AuthLayout from "@/pages/AuthLayout";
+import AuthLayout from "@/layouts/AuthLayout";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
-
-import UserDashboard from "@/pages/UserDashboard";
 
 import AdminLayout from "@/layouts/AdminLayout";
 import AdminDashboard from "@/pages/AdminDashboard";
@@ -19,17 +17,31 @@ import EditCategory from "@/pages/EditCategory";
 import ManageNotifications from "@/pages/ManageNotifications";
 import CreateNotification from "@/pages/CreateNotification";
 import EditNotification from "@/pages/EditNotification";
+import UserLayout from "@/layouts/UserLayout";
+import UserCategoryNotifications from "@/pages/UserCategoryNotifications";
+import UserDashboardHome from "@/pages/UserDashboardHome";
+import CategoryBrowse from "@/pages/CategoryBrowse";
 
 const router = createBrowserRouter([
-  {
-    element: <ProtectedRoute allowedRoles={["user"]} />,
-    children: [
-      {
-        path: "/dashboard",
-        element: <UserDashboard />,
-      },
-    ],
-  },
+{
+  element: <ProtectedRoute allowedRoles={["user"]} />,
+  children: [
+    {
+      element: <UserLayout />,
+      children: [
+        { path: "/dashboard", element: <UserDashboardHome /> },
+        {
+          path: "/dashboard/categories/:id",
+          element: <UserCategoryNotifications />,
+        },
+        {
+  path: "/dashboard/categories",
+  element: <CategoryBrowse />,
+}
+      ],
+    },
+  ],
+},
 
   {
     element: <ProtectedRoute allowedRoles={["admin"]} />,
