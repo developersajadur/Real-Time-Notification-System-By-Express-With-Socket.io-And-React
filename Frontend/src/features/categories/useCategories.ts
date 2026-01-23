@@ -5,9 +5,9 @@ import { getAllCategories } from "./category.api";
 
 
 export const useCategories = (
-  page: number,
-  limit: number,
-  search: string
+  page?: number,
+  limit?: number,
+  search?: string
 ) => {
   return useQuery({
     queryKey: ["categories", page, search],

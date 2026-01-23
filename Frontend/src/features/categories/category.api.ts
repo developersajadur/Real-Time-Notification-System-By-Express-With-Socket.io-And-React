@@ -5,9 +5,9 @@ import { type CreateCategoryPayload, type ICategory, type UpdateCategoryPayload 
 
 
 export const getAllCategories = async (
-  page: number,
-  limit: number,
-  search: string
+  page?: number,
+  limit?: number,
+  search?: string
 ): Promise<{ data: ICategory[]; meta: any }> => {
   const res = await axios.get("/categories/get-all", {
     params: { page, limit, search },

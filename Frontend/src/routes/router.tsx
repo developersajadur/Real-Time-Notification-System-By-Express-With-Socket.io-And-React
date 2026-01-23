@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 
-import ProtectedRoute from "./ProtectedRoutes";
 import PublicAuthRoute from "./PublicAuthRoute";
 
 import AuthLayout from "@/layouts/AuthLayout";
@@ -21,6 +20,7 @@ import UserLayout from "@/layouts/UserLayout";
 import UserCategoryNotifications from "@/pages/UserCategoryNotifications";
 import UserDashboardHome from "@/pages/UserDashboardHome";
 import CategoryBrowse from "@/pages/CategoryBrowse";
+import ProtectedRoute from "./protectedRoutes";
 
 const router = createBrowserRouter([
 {

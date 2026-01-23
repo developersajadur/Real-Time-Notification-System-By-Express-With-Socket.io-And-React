@@ -21,7 +21,8 @@ type CategoryListProps = {
 };
 
 const CategoryList = ({ onEdit }: CategoryListProps) => {
-  const { data: categories = [], isLoading } = useCategories();
+  const { data: categories = [], isLoading } = useCategories() as any;
+  const categoryList = categories?.data || [] as any[];
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   if (isLoading) {
@@ -47,7 +48,7 @@ const CategoryList = ({ onEdit }: CategoryListProps) => {
           </TableHeader>
 
           <TableBody>
-            {categories.map((category: any) => (
+            {categoryList.map((category: any) => (
               <TableRow key={category._id}>
                 <TableCell className="font-medium">
                   {category.name}
@@ -81,7 +82,7 @@ const CategoryList = ({ onEdit }: CategoryListProps) => {
               </TableRow>
             ))}
 
-            {categories.length === 0 && (
+            {categoryList.length === 0 && (
               <TableRow>
                 <TableCell
                   colSpan={3}

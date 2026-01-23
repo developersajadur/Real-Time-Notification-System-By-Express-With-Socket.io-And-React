@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect } from "react";
@@ -53,7 +54,8 @@ export default function NotificationForm({
   defaultValues,
   mode = "create",
 }: Props) {
-  const { data: categories = [] } = useCategories();
+ const { data: categories = [] } = useCategories() as any;
+  const categoryList = categories?.data || [] as any[];
 
   const form = useForm<NotificationFormValues>({
     resolver: zodResolver(schema),
@@ -139,7 +141,7 @@ export default function NotificationForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categories.map(cat => (
+                      {categoryList.map((cat: any) => (
                         <SelectItem key={cat._id} value={cat._id}>
                           {cat.name}
                         </SelectItem>
