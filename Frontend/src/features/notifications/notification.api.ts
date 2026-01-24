@@ -27,7 +27,7 @@ export const getNotificationById = (id: string) => {
 };
 
 export const deleteNotification = (id: string) => {
-  return axios.delete(`/notifications/${id}`);
+  return axios.delete(`/notifications/delete/${id}`);
 };
 
 export const updateNotification = ({

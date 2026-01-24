@@ -10,7 +10,6 @@ const UserCategoryNotifications = () => {
 
   const { data = [], isLoading } = useNotificationsByCategory(id!);
   const { data: category } = useCategory(id!);
-  console.log(category);
   const { mutate: unsubscribe, isPending } =
     useUnsubscribeCategory();
 
